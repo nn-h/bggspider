@@ -1,0 +1,64 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BASE_URI	../bggspider/spiders/bgg_spider.py	/^BASE_URI = "https:\/\/boardgamegeek.com"$/;"	kind:variable	line:7
+BGGSpider	../bggspider/spiders/bgg_spider.py	/^class BGGSpider(scrapy.Spider):$/;"	kind:class	line:12
+BOT_NAME	../bggspider/settings.py	/^BOT_NAME = 'bggspider'$/;"	kind:variable	line:12
+BggspiderPipeline	../bggspider/pipelines.py	/^class BggspiderPipeline(object):$/;"	kind:class	line:9
+BggspiderSpiderMiddleware	../bggspider/middlewares.py	/^class BggspiderSpiderMiddleware(object):$/;"	kind:class	line:11
+Boardgame	../bggspider/items.py	/^class Boardgame(Item):$/;"	kind:class	line:10
+Boardgame	../bggspider/spiders/bgg_spider.py	/^from ..items import Boardgame$/;"	kind:namespace	line:5
+CREDITS_URI	../bggspider/spiders/bgg_spider.py	/^CREDITS_URI = '\/credits'$/;"	kind:variable	line:9
+DOWNLOADER_MIDDLEWARES	../bggspider/settings.py	/^DOWNLOADER_MIDDLEWARES = {$/;"	kind:variable	line:58
+DUPEFILTER_CLASS	../bggspider/settings.py	/^DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'$/;"	kind:variable	line:97
+Field	../bggspider/items.py	/^from scrapy import Field, Item$/;"	kind:namespace	line:7
+HTTPCACHE_STORAGE	../bggspider/settings.py	/^HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'$/;"	kind:variable	line:98
+Item	../bggspider/items.py	/^from scrapy import Field, Item$/;"	kind:namespace	line:7
+LIST_URL	../bggspider/spiders/bgg_spider.py	/^LIST_URL = BASE_URI + "\/browse\/boardgame"$/;"	kind:variable	line:8
+NEWSPIDER_MODULE	../bggspider/settings.py	/^NEWSPIDER_MODULE = 'bggspider.spiders'$/;"	kind:variable	line:15
+SEL_LINK	../bggspider/selector_paths.py	/^SEL_LINK = '.\/\/div[contains(@id, "results_objectname")]\/a\/@href'$/;"	kind:variable	line:8
+SEL_TITLE	../bggspider/selector_paths.py	/^SEL_TITLE = '.\/\/div[contains(@id, "results_objectname")]\/a\/text()'$/;"	kind:variable	line:5
+SPIDER_MIDDLEWARE	../bggspider/settings.py	/^SPIDER_MIDDLEWARE = {$/;"	kind:variable	line:52
+SPIDER_MODULES	../bggspider/settings.py	/^SPIDER_MODULES = ['bggspider.spiders']$/;"	kind:variable	line:14
+SPLASH_URL	../bggspider/settings.py	/^SPLASH_URL = 'http:\/\/localhost:8050'$/;"	kind:variable	line:48
+SplashRequest	../bggspider/spiders/bgg_spider.py	/^from scrapy_splash import SplashRequest$/;"	kind:namespace	line:1
+USER_AGENT	../bggspider/settings.py	/^USER_AGENT = 'Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/60.0.3112.90 Safari\/537.36'$/;"	kind:variable	line:19
+__init__.py	../bggspider/__init__.py	1;"	kind:file	line:1
+__init__.py	../bggspider/spiders/__init__.py	1;"	kind:file	line:1
+allowed_domains	../bggspider/spiders/bgg_spider.py	/^    allowed_domains = ['boardgamegeek.com']$/;"	kind:variable	line:14
+avg_rating	../bggspider/items.py	/^    avg_rating = Field()$/;"	kind:variable	line:14
+bg_id	../bggspider/items.py	/^    bg_id = Field()$/;"	kind:variable	line:11
+bgg_spider.py	../bggspider/spiders/bgg_spider.py	1;"	kind:file	line:1
+dumps	../bggspider/spiders/bgg_spider.py	/^from json import dumps$/;"	kind:namespace	line:4
+execute	../bggspider/runner.py	/^from scrapy.cmdline import execute$/;"	kind:namespace	line:1
+from_crawler	../bggspider/middlewares.py	/^    def from_crawler(cls, crawler):$/;"	kind:member	line:17
+geek_rating	../bggspider/items.py	/^    geek_rating = Field()$/;"	kind:variable	line:13
+items.py	../bggspider/items.py	1;"	kind:file	line:1
+mechanisms	../bggspider/items.py	/^    mechanisms = Field(serializer='set')$/;"	kind:variable	line:18
+middlewares.py	../bggspider/middlewares.py	1;"	kind:file	line:1
+min_age	../bggspider/items.py	/^    min_age = Field()$/;"	kind:variable	line:19
+name	../bggspider/spiders/bgg_spider.py	/^    name = 'bgg_spider'$/;"	kind:variable	line:13
+parse	../bggspider/spiders/bgg_spider.py	/^    def parse(self, response):$/;"	kind:member	line:35
+parse_boardgame	../bggspider/spiders/bgg_spider.py	/^    def parse_boardgame(self, response):$/;"	kind:member	line:65
+parse_credits	../bggspider/spiders/bgg_spider.py	/^    def parse_credits(self, response):$/;"	kind:member	line:85
+pipelines.py	../bggspider/pipelines.py	1;"	kind:file	line:1
+process_item	../bggspider/pipelines.py	/^    def process_item(self, item, spider):$/;"	kind:member	line:10
+process_spider_exception	../bggspider/middlewares.py	/^    def process_spider_exception(self, response, exception, spider):$/;"	kind:member	line:38
+process_spider_input	../bggspider/middlewares.py	/^    def process_spider_input(self, response, spider):$/;"	kind:member	line:23
+process_spider_output	../bggspider/middlewares.py	/^    def process_spider_output(self, response, result, spider):$/;"	kind:member	line:30
+process_start_requests	../bggspider/middlewares.py	/^    def process_start_requests(self, start_requests, spider):$/;"	kind:member	line:46
+runner.py	../bggspider/runner.py	1;"	kind:file	line:1
+scrapy	../bggspider/spiders/bgg_spider.py	/^import scrapy$/;"	kind:namespace	line:2
+selector_paths	../bggspider/spiders/bgg_spider.py	/^from .. import selector_paths$/;"	kind:namespace	line:3
+selector_paths.py	../bggspider/selector_paths.py	1;"	kind:file	line:1
+settings.py	../bggspider/settings.py	1;"	kind:file	line:1
+signals	../bggspider/middlewares.py	/^from scrapy import signals$/;"	kind:namespace	line:8
+spider_opened	../bggspider/middlewares.py	/^    def spider_opened(self, spider):$/;"	kind:member	line:55
+start_requests	../bggspider/spiders/bgg_spider.py	/^    def start_requests(self):$/;"	kind:member	line:23
+time	../bggspider/items.py	/^    time = Field()$/;"	kind:variable	line:16
+title	../bggspider/items.py	/^    title = Field()$/;"	kind:variable	line:12
+votes	../bggspider/items.py	/^    votes = Field()$/;"	kind:variable	line:15
+weight	../bggspider/items.py	/^    weight = Field()$/;"	kind:variable	line:17

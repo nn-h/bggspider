@@ -1,0 +1,16 @@
+# take the upper bounds of the max time, on average player count and time relative.
+SEL_MAX_TIME = '//span[@max="::geekitemctrl.geekitem.data.item.maxplaytime"]/span[@ng-if="max>0 && min != max"]/text()'
+SEL_MIN_TIME = '//span[@min="::geekitemctrl.geekitem.data.item.minplaytime"]/span[@ng-if="min > 0"]/text()'
+SEL_WEIGHT = '//span[contains(@class, "gameplay-weight")]/text()'
+SEL_MIN_AGE = '//div/span[contains(@ng-if,"::geekitemctrl.geekitem.data.item.minage")]/text()'
+SEL_MAX_PLAYERS = '//span[@max="::geekitemctrl.geekitem.data.item.maxplayers"]/span[@ng-if="max>0 && min != max"]/text()'
+SEL_MIN_PLAYERS = '//span[@min="::geekitemctrl.geekitem.data.item.minplayers"]/span[@ng-if="min > 0"]/text()'
+SEL_TITLE = './/div[contains(@id, "results_objectname")]/a/text()'
+# SEL_METRICS is a list of columns in a row with same class, accessed by indicies.
+SEL_METRICS = './/td[@class="collection_bggrating"]/text()'
+SEL_LINK = './/div[contains(@id, "results_objectname")]/a/@href'
+SEL_MECHANISMS = '//div[@class="outline-item-description"]/div/div/a[contains(@href, "boardgamemechanic")]/text()'
+SEL_MECHANISIMS_ALT = '//div[@class="feature-description"]/popup-list[contains(@sref, "boardgamemechanic")]/span[@class="text-block"]/a/text()'
+SEL_NEXT_PG = '//div[@id="main_content"]/p/a[5]/@href'
+SEL_TXT_REVIEWS = '//div[@class="panel-inline-links"]/a[contains(text(), "All Text Reviews")]/text()'
+SEL_VID_REVIEWS = '//div[@class="panel-inline-links"]/a[contains(text(), "All Video Reviews")]/text()'
