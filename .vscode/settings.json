@@ -1,6 +1,0 @@
-// Place your settings in this file to overwrite default and user settings.
-{
-    "python.autoComplete.preloadModules": [
-        "/Users/husked/.local/share/virtualenvs/bggspider-ag2Asl6g/lib/python3.6/site-packages/"
-    ]
-}
