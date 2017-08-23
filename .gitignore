@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# rm-protection
+*.rm-protection
+
+# VSCode config/env
+.vscode/
+
 # C extensions
 *.so
 
