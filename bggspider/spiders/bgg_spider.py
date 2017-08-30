@@ -2,7 +2,6 @@ from scrapy_splash import SplashRequest
 from scrapy import Spider
 from .. import selector_paths
 from ..items import Boardgame
-import re
 
 BASE_URI = "https://boardgamegeek.com"
 LIST_URL = BASE_URI + "/browse/boardgame"
@@ -21,7 +20,9 @@ class BGGSpider(Spider):
             bg = Boardgame()
             bg['title'] = row_.xpath(
                 selector_paths.SEL_TITLE).extract_first()
-            bg['geek_rating'], bg['avg_rating'], bg['votes'] = [x.strip() for x in row_.xpath(selector_paths.SEL_METRICS).extract()]
+            bg['geek_rating'], bg['avg_rating'], bg['votes'] = [x for x in row_.xpath(selector_paths.SEL_METRICS).extract()]
+            if bg['geek_rating'].strip() == 'N/A':
+                yield
             bg_link = BASE_URI + row_.xpath(
                 selector_paths.SEL_LINK).extract_first()
             bg['bg_id'] = bg_link.split('/')[4]
@@ -33,6 +34,7 @@ class BGGSpider(Spider):
             )
         next_page = BASE_URI + response.xpath(selector_paths.SEL_NEXT_PG).extract_first()
         if next_page is not None:
+            print(f'MOVING to {next_page}')
             yield response.follow(next_page, self.parse)
 
     def parse_boardgame(self, response):
@@ -43,37 +45,36 @@ class BGGSpider(Spider):
         bg['min_players'] = response.xpath(
             selector_paths.SEL_MIN_PLAYERS).extract_first()
         bg['max_players'] = response.xpath(
-                selector_paths.SEL_MIN_PLAYERS).extract_first()
-        try:
-            if bg['min_players'] is not None:
-                bg['min_players'] = bg['min_players'].strip()
-            if bg['max_players'] is not None:
-                bg['max_players'] = bg['max_players'].strip()
-        except AttributeError:
-            print(f'ERROR getting players\nTitle: {bg["title"]}, Players: {bg["min_players"]}, {bg["max_players"]}.')
-            
+                selector_paths.SEL_MAX_PLAYERS).extract_first()
+
         # check for min/max time
         bg['time'] = response.xpath(
             selector_paths.SEL_MAX_TIME).extract_first()
-        if bg['time'] is None: # no max time, get min.
+        if bg['time'] is None:  # no max time, get min.
             bg['time'] = response.xpath(selector_paths.SEL_MIN_TIME).extract_first()
-        bg['time'] = bg['time'].strip()
 
         bg['weight'] = response.xpath(
-            selector_paths.SEL_WEIGHT).extract_first().strip()
+            selector_paths.SEL_WEIGHT).extract_first()
         bg['min_age'] = response.xpath(
-            selector_paths.SEL_MIN_AGE).extract_first().strip()
+            selector_paths.SEL_MIN_AGE).extract_first()
+        # some pages do not contain reviews, do some exception work.
         bg['txt_cnt'] = response.xpath(
-            selector_paths.SEL_TXT_REVIEWS).extract_first().strip()
+            selector_paths.SEL_TXT_REVIEWS).extract_first()
         bg['vid_cnt'] = response.xpath(
-            selector_paths.SEL_VID_REVIEWS).extract_first().strip()
-
-        credits_link = bg_link + CREDITS_URI
-        yield SplashRequest(
-            credits_link,
-            callback=self.parse_credits,
-            meta={'bg': bg}
-        )
+            selector_paths.SEL_VID_REVIEWS).extract_first()
+        # credits_link = bg_link + CREDITS_URI
+        bg['mechanisms'] = {
+            k
+            for
+            k in response.xpath(
+                selector_paths.SEL_MECHANISMS_ALT).extract()
+        }
+        # yield SplashRequest(
+        #     credits_link,
+        #     callback=self.parse_credits,
+        #     meta={'bg': bg}
+        # )
+        yield bg
 
     def parse_credits(self, response):
         bg = response.meta['bg']
@@ -83,7 +84,7 @@ class BGGSpider(Spider):
             k in response.xpath(
                 selector_paths.SEL_MECHANISMS).extract()
         }
-        if not bg['mechanisms']:
+        if 'mechanisms' not in bg:
             # try the old markup method
             bg['mechanisms'] = {
                 k
@@ -91,5 +92,4 @@ class BGGSpider(Spider):
                 k in response.xpath(
                     selector_paths.SEL_MECHANISIMS_ALT).extract()
             }
-        print(bg)
         yield bg

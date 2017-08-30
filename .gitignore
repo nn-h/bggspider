@@ -9,6 +9,12 @@ __pycache__/
 # VSCode config/env
 .vscode/
 
+# ignore the JOBDIR for scrapy scheduling.
+bggspider/scheduler/
+
+# ignore dataset file
+bgg.json
+
 # C extensions
 *.so
 
