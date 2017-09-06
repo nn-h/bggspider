@@ -20,23 +20,18 @@ class BoardgamePipeline(object):
 
     def process_item(self, item, spider):
         # START CLEANUP
-        try:
-            fields = [
+        fields = [
                 'title', 'geek_rating',
                 'min_age', 'votes',
                 'min_players', 'max_players',
-                'weight'
+                'weight', 'avg_rating'
             ]
+        try:
             for field in fields:
-                if field not in item or not field[item]:
+                if field not in item or not item[field]:
                     item[field] = 0
                 else:
                     item[field] = item[field].strip()
-            item['title'] = item['title'].strip()
-            item['geek_rating'] = item['geek_rating'].strip()
-            item['min_age'] = item['min_age'].strip()
-            item['votes'] = item['votes'].strip()
-            item['weight'] = item['weight'].strip()
             if item['time'] == DOUBLE_EN_DASH or item['time'] is None:
                 item['time'] = 0
             else:
@@ -66,21 +61,20 @@ class BoardgamePipeline(object):
             item['min_age'] = 0
         else:
             item['min_age'] = item['min_age'][:-1]
-        if item['geek_rating'] is 'N/A':
-            item['geek_rating'] = 0
-        if item['votes'] is 'N/A':
-            item['votes'] = 0
+        for field in fields:
+            if item[field] == 'N/A':
+                item[field] = 0
         # END PROCESSING
 
         # START FILTERING
-        if item['geek_rating'] is not 'N/A':
-            fields = [
+        if item['avg_rating'] != 0:
+            int_fields = [
                 'min_age', 'time', 'votes', 'min_players', 'max_players'
             ]
             float_fields = [
                 'weight', 'avg_rating', 'geek_rating'
             ]
-            for field in fields:
+            for field in int_fields:
                 item[field] = int(item[field])
             for field in float_fields:
                 item[field] = float(item[field])
@@ -91,5 +85,5 @@ class BoardgamePipeline(object):
             print(f'PROCESSED: {item["bg_id"]}, {item["title"]}')
             return item
         else:
-            raise DropItem(f'BG: {item["title"]}, doesn\'t have enough reviews {item["review_count"]}')
+            raise DropItem(f'BG: {item["title"]}, doesn\'t have enough info. "avg_rating: {item["avg_rating"]}"')
         # END FILTERING
