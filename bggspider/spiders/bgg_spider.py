@@ -4,7 +4,7 @@ from .. import selector_paths
 from ..items import Boardgame
 
 BASE_URI = "https://boardgamegeek.com"
-LIST_URL = BASE_URI + "/browse/boardgame/page/400"
+LIST_URL = BASE_URI + "/browse/boardgame"
 CREDITS_URI = '/credits'
 
 
