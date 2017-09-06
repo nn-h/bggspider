@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from scrapy.exceptions import DropItem
 import re
+
+DOUBLE_EN_DASH = u'\u2013\u2013'
 # Define your item pipelines here
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
@@ -16,58 +18,58 @@ import re
 
 class BoardgamePipeline(object):
 
-    def opens_spider(self, spider):
-        self.file = open('bgg.json', 'w')
-
-    def close_spider(self, spider):
-        self.file.close()
-
     def process_item(self, item, spider):
         # START CLEANUP
         try:
+            fields = [
+                'title', 'geek_rating',
+                'min_age', 'votes',
+                'min_players', 'max_players',
+                'weight'
+            ]
+            for field in fields:
+                if field not in item or not field[item]:
+                    item[field] = 0
+                else:
+                    item[field] = item[field].strip()
             item['title'] = item['title'].strip()
-
-            if item['min_players'] is None:
-                item['min_players'] = 0
-            else:
-                item['min_players'] = item['min_players'].strip()
-            if item['max_players'] is None:
-                item['max_players'] = 0
-            else:
-                item['max_players'] = item['max_players'].strip()
-            if item['time'] == u"\u2013":
+            item['geek_rating'] = item['geek_rating'].strip()
+            item['min_age'] = item['min_age'].strip()
+            item['votes'] = item['votes'].strip()
+            item['weight'] = item['weight'].strip()
+            if item['time'] == DOUBLE_EN_DASH or item['time'] is None:
                 item['time'] = 0
             else:
                 item['time'] = item['time'].strip()
-            
-            item['weight'] = item['weight'].strip()
-            item['min_age'] = item['min_age'].strip()
-            item['mechanisms'] = {
-                k.strip() for k in item['mechanisms']
-            }
-        except AttributeError as err:
-            raise DropItem(f'BG: {item["title"]}, doesn\'t have enough features {item}')
-            print(err)
 
+            if 'mechanisms' in item:
+                item['mechanisms'] = {
+                    k.strip() for k in item['mechanisms']
+                }
+            else:
+                item['mechanisms'] = 0
+        except AttributeError as err:
+            raise DropItem(f'INFO: Dropping {item["title"]}, unhandled field.')
         # END CLEANUP
 
         # START PROCESSING
-        txt_cnt = re.search('\d+', item['txt_cnt'])
-        vid_cnt = re.search('\d+', item['vid_cnt'])
-        if txt_cnt is not None:
-            txt_cnt = int(re.findall('\d+', item['txt_cnt'])[0])
+        if item['txt_cnt']:
+            item['txt_cnt'] = int(re.findall('\d+', item['txt_cnt'])[0])
         else:
-            txt_cnt = 0
-        if vid_cnt is not None:
-            vid_cnt = int(re.findall('\d+', item['vid_cnt'])[0])
+            item['txt_cnt'] = 0
+        if item['vid_cnt']:
+            item['vid_cnt'] = int(re.findall('\d+', item['vid_cnt'])[0])
         else:
-            vid_cnt = 0
-        item['review_count'] = txt_cnt + vid_cnt
-        if re.match('-', item['min_age']):
-                item['min_age'] = 0
+            item['vid_cnt'] = 0
+        item['review_count'] = item['txt_cnt'] + item['vid_cnt']
+        if item['min_age'] == DOUBLE_EN_DASH:
+            item['min_age'] = 0
         else:
-            # cleanup the '+'
             item['min_age'] = item['min_age'][:-1]
+        if item['geek_rating'] is 'N/A':
+            item['geek_rating'] = 0
+        if item['votes'] is 'N/A':
+            item['votes'] = 0
         # END PROCESSING
 
         # START FILTERING

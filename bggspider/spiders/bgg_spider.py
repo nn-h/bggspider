@@ -4,7 +4,7 @@ from .. import selector_paths
 from ..items import Boardgame
 
 BASE_URI = "https://boardgamegeek.com"
-LIST_URL = BASE_URI + "/browse/boardgame"
+LIST_URL = BASE_URI + "/browse/boardgame/page/400"
 CREDITS_URI = '/credits'
 
 
@@ -21,7 +21,8 @@ class BGGSpider(Spider):
             bg['title'] = row_.xpath(
                 selector_paths.SEL_TITLE).extract_first()
             bg['geek_rating'], bg['avg_rating'], bg['votes'] = [x for x in row_.xpath(selector_paths.SEL_METRICS).extract()]
-            if bg['geek_rating'].strip() == 'N/A':
+            if 'N/A' in bg['geek_rating'] and 'N/A' in bg['avg_rating']:
+                print('INFO: Not enough information dropping BG.')
                 yield
             bg_link = BASE_URI + row_.xpath(
                 selector_paths.SEL_LINK).extract_first()
@@ -29,17 +30,19 @@ class BGGSpider(Spider):
             yield SplashRequest(
                 url=bg_link,
                 callback=self.parse_boardgame,
-                meta={'bg': bg, 'bg_link': bg_link},
-                dont_filter=True
+                meta={'bg': bg, 'bg_link': bg_link}
             )
-        next_page = BASE_URI + response.xpath(selector_paths.SEL_NEXT_PG).extract_first()
-        if next_page is not None:
-            print(f'MOVING to {next_page}')
-            yield response.follow(next_page, self.parse)
+
+        next_page = response.xpath(selector_paths.SEL_NEXT_PG).extract_first()
+        next_page_url = response.urljoin(next_page)
+        yield SplashRequest(
+            url=next_page_url,
+            callback=self.parse
+        )
 
     def parse_boardgame(self, response):
         bg = response.meta['bg']
-        bg_link = response.meta['bg_link']
+        # bg_link = response.meta['bg_link']
 
         # get min/max players
         bg['min_players'] = response.xpath(
