@@ -6,7 +6,7 @@ __pycache__/
 # rm-protection
 *.rm-protection
 
-settings.py
+
 
 # VSCode config/env
 .vscode/
