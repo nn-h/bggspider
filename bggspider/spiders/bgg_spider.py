@@ -30,7 +30,9 @@ class BGGSpider(Spider):
             yield SplashRequest(
                 url=bg_link,
                 callback=self.parse_boardgame,
-                meta={'bg': bg, 'bg_link': bg_link}
+                endpoint='render.html',
+                meta={'bg': bg, 'bg_link': bg_link},
+                args={'wait': 4}
             )
 
         next_page = response.xpath(selector_paths.SEL_NEXT_PG).extract_first()
@@ -66,6 +68,7 @@ class BGGSpider(Spider):
         bg['vid_cnt'] = response.xpath(
             selector_paths.SEL_VID_REVIEWS).extract_first()
         # credits_link = bg_link + CREDITS_URI
+
         bg['mechanisms'] = {
             k
             for

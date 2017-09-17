@@ -12,7 +12,7 @@ __pycache__/
 .vscode/
 
 # ignore the JOBDIR for scrapy scheduling.
-bggspider/scheduler/
+bggspider/scheduler/*
 
 # ignore dataset file
 bgg.json
